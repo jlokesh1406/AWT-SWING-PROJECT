@@ -1,0 +1,126 @@
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+public class text_editor extends JFrame implements ActionListener {
+
+    JTextArea textArea;
+    JScrollPane scrollPane;
+
+    JLabel jSpinnerLabel;
+    JSpinner jSpinner;
+
+    JButton jButton;
+
+    JComboBox jComboBox;
+
+    JMenuBar menuBar;
+    JMenu filename;
+    JMenu OpenItem;
+    JMenu SaveItem;
+    JMenu ExitItem;
+
+    text_editor()
+    {
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBackground(Color.BLACK);
+        setTitle("Text Editor");
+        setSize(500,500);
+        setLayout(new FlowLayout());
+
+
+        textArea = new JTextArea();
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setFont(new Font("Arial",Font.PLAIN,20));
+
+        scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(450,450));
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setForeground(Color.GREEN);
+
+        jSpinnerLabel = new JLabel("FontSize: ");
+        jSpinnerLabel.setForeground(Color.GREEN);
+
+        jSpinner = new JSpinner();
+        jSpinner.setFont(new Font("Arial",Font.PLAIN,15));
+        jSpinner.setForeground(Color.GREEN);
+
+        jSpinner.setPreferredSize(new Dimension(100,30));
+        jSpinner.setValue(20);
+
+
+
+        jSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                textArea.setFont(new Font(textArea.getFont().getFamily(),Font.PLAIN,(int)jSpinner.getValue()));
+            }
+        });
+
+        jButton  = new JButton("Colour");
+        jButton.setFocusable(true);
+        jButton.setForeground(Color.BLACK);
+        jButton.setBackground(Color.GREEN);
+        jButton.addActionListener(this);
+
+
+        String fonts[]=GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        jComboBox = new JComboBox(fonts);
+        jComboBox.setForeground(Color.BLACK);
+        jComboBox.setBackground(Color.GREEN);
+        jComboBox.addActionListener(this);
+        jComboBox.setSelectedItem("Arial");
+
+
+        //-- menubar
+
+        menuBar = new JMenuBar();
+        menuBar.setBackground(Color.GREEN);
+        menuBar.setForeground(Color.BLACK);
+
+        filename = new JMenu("File");
+        OpenItem = new JMenu("Open");
+        SaveItem = new JMenu("Save");
+        ExitItem = new JMenu("Exit");
+
+        menuBar.add(filename);
+        menuBar.add(OpenItem);
+        menuBar.add(SaveItem);
+        menuBar.add(ExitItem);
+        //--
+
+
+        setJMenuBar(menuBar);
+        add(jSpinnerLabel);
+        add(jSpinner);
+        add(jButton);
+        add(jComboBox);
+        add(scrollPane);
+        this.getContentPane().setBackground(Color.BLACK);
+        setVisible(true);
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==jButton)
+        {
+            JColorChooser colorChooser = new JColorChooser();
+
+            Color color = colorChooser.showDialog(null,"chose",Color.BLACK);
+
+            textArea.setForeground(color);
+        }
+        if (e.getSource()==jComboBox)
+        {
+            textArea.setFont(new Font((String)jComboBox.getSelectedItem(),Font.PLAIN,textArea.getFont().getSize()));
+        }
+    }
+    public static void main(String[] args) {
+        new text_editor();
+    }
+}
