@@ -1,0 +1,211 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+class TieTacToe implements ActionListener
+{
+    Random random = new Random();
+    JFrame frame = new JFrame();
+    JPanel title_panel = new JPanel();
+    JLabel textfield = new JLabel();
+    JPanel button_panel = new JPanel();
+    JButton button[] = new JButton[9];
+    boolean player1_turn;
+
+    TieTacToe()
+    {
+        ImageIcon imageIcon = new ImageIcon("tic_tac_toe-1024.webp");
+        frame.setIconImage(imageIcon.getImage());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Tic Tac Toe");
+        frame.setSize(800,800);
+        frame.getContentPane().setBackground(Color.GREEN);
+        frame.setLayout(new BorderLayout());
+        frame.setVisible(true);
+
+
+        textfield.setBackground(Color.BLACK);
+        textfield.setForeground(Color.GREEN);
+        textfield.setFont(new Font("Arial",Font.BOLD,75));
+        textfield.setHorizontalAlignment(JLabel.CENTER);
+        textfield.setText("Tic Tac Toe");
+        textfield.setOpaque(true);
+
+        title_panel.setLayout(new BorderLayout());
+        title_panel.setBounds(0,0,800,100);
+
+
+        button_panel.setLayout(new GridLayout(3,3));
+        button_panel.setBackground(Color.magenta);
+
+        for(int i=0;i<9;i++)
+        {
+            button[i] = new JButton();
+            button_panel.add(button[i]);
+            button[i].setFont(new Font("Arial",Font.BOLD,70));
+            button[i].setFocusable(false);
+            button[i].addActionListener(this);
+            button[i].setBackground(Color.BLACK);
+            button[i].addActionListener(this);
+        }
+
+        title_panel.add(textfield);
+        frame.add(title_panel,BorderLayout.NORTH);
+        frame.add(button_panel);
+
+        firstTurn();
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        for(int i=0;i<9;i++)
+        {
+            if(e.getSource()==button[i])
+            {
+                if(player1_turn)
+                {
+                    if(button[i].getText()=="")
+                    {
+                        button[i].setForeground(new Color(255,0,0));
+                        button[i].setText("X");
+                        player1_turn=false;
+                        textfield.setText("O turn");
+                        check();
+                    }
+                }
+                else
+                {
+                    if(button[i].getText()=="")
+                    {
+                        button[i].setForeground(new Color(0,0,255));
+                        button[i].setText("O");
+                        player1_turn=true;
+                        textfield.setText("X turn");
+                        check();
+                    }
+                }
+            }
+        }
+    }
+    public  void firstTurn()
+    {
+        try {
+            Thread.sleep(5000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        if(random.nextInt(2)==0)
+        {
+            player1_turn=true;
+            textfield.setText("X turn");
+        }
+        else
+        {
+            player1_turn=false;
+            textfield.setText("O turn");
+        }
+    }
+    public void check()
+    {
+        if(button[0].getText()=="X" && button[1].getText()=="X" && button[2].getText()=="X")
+        {
+            Xwin(0,1,2);
+        }
+        if(button[3].getText()=="X" && button[4].getText()=="X" && button[5].getText()=="X")
+        {
+            Xwin(3,4,5);
+        }
+        if(button[6].getText()=="X" && button[7].getText()=="X" && button[8].getText()=="X")
+        {
+            Xwin(6,7,8);
+        }
+        if(button[0].getText()=="X" && button[3].getText()=="X" && button[6].getText()=="X")
+        {
+            Xwin(0,3,6);
+        }
+        if(button[1].getText()=="X" && button[4].getText()=="X" && button[7].getText()=="X")
+        {
+            Xwin(1,4,7);
+        }
+        if(button[2].getText()=="X" && button[5].getText()=="X" && button[8].getText()=="X")
+        {
+            Xwin(2,5,8);
+        }
+        if(button[0].getText()=="X" && button[4].getText()=="X" && button[8].getText()=="X")
+        {
+            Xwin(0,4,8);
+        }
+        if(button[2].getText()=="X" && button[4].getText()=="X" && button[6].getText()=="X")
+        {
+            Xwin(2,4,6);
+        }
+
+        //condition for o
+
+        if(button[0].getText()=="O" && button[1].getText()=="O" && button[2].getText()=="O")
+        {
+            Ywin(0,1,2);
+        }
+        if(button[3].getText()=="O" && button[4].getText()=="O" && button[5].getText()=="O")
+        {
+            Ywin(3,4,5);
+        }
+        if(button[6].getText()=="O" && button[7].getText()=="O" && button[8].getText()=="O")
+        {
+            Ywin(6,7,8);
+        }
+        if(button[0].getText()=="O" && button[3].getText()=="O" && button[6].getText()=="O")
+        {
+            Ywin(0,3,6);
+        }
+        if(button[1].getText()=="O" && button[4].getText()=="O" && button[7].getText()=="O")
+        {
+            Ywin(1,4,7);
+        }
+        if(button[2].getText()=="O" && button[5].getText()=="O" && button[8].getText()=="O")
+        {
+           Ywin(2,5,8);
+        }
+        if(button[0].getText()=="O" && button[4].getText()=="O" && button[8].getText()=="O")
+        {
+            Ywin(0,4,8);
+        }
+        if(button[2].getText()=="O" && button[4].getText()=="O" && button[6].getText()=="O")
+        {
+            Ywin(2,4,6);
+        }
+    }
+
+    public void Xwin(int a,int b,int c)
+    {
+        button[a].setBackground(Color.GREEN);
+        button[b].setBackground(Color.GREEN);
+        button[c].setBackground(Color.GREEN);
+
+        for(int i=0;i<9;i++)
+        {
+            button[i].setEnabled(false);
+        }
+        textfield.setText("X wins");
+
+    }
+    public void Ywin(int a,int b,int c)
+    {
+        button[a].setBackground(Color.GREEN);
+        button[b].setBackground(Color.GREEN);
+        button[c].setBackground(Color.GREEN);
+
+        for(int i=0;i<9;i++)
+        {
+            button[i].setEnabled(false);
+        }
+        textfield.setText("O wins");
+    }
+    public static void main(String[] args) {
+        new TieTacToe();
+    }
+}
